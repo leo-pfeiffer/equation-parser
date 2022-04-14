@@ -1,2 +1,2 @@
 # equation-parser
-Equation parser written in Scala
+Simple equation parser written in Scala to practice functional programming in Scala
