@@ -26,4 +26,21 @@ class TokenizerTest extends AnyFunSuite {
             tokenize("1 + 2 + b + 3")
         )
     }
+
+    test ("equation with parens") {
+        val expected = List(
+            LeftParensToken(), NumberToken(1), SumToken(), 
+            NumberToken(2), RightParensToken()
+        )
+        val eq = "(1+2)"
+        assert(tokenize(eq) == expected)
+    }
+
+    test ("equation with power") {
+        val expected = List(
+            NumberToken(1), PowerToken(), NumberToken(2)
+        )
+        val eq = "1^2"
+        assert(tokenize(eq) == expected)
+    }
 }

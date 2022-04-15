@@ -12,6 +12,7 @@ class ExpresionTest extends AnyFunSuite {
         val d12 = new Difference(n1, n2);
         val prod12 = new Product(n1, n2);
         val div12 = new Division(n1, n2);
+        val pow23 = new Power(n2, n3)
 
     test("number value") {
         new TestExpressions {
@@ -48,6 +49,12 @@ class ExpresionTest extends AnyFunSuite {
     test("evaluate simple two-part division") {
         new TestExpressions {
             assert(evaluate(div12) == 0.5)
+        }
+    }
+
+    test("evaluate simple power") {
+        new TestExpressions {
+            assert(evaluate(pow23) == 8)
         }
     }
 
