@@ -1,16 +1,8 @@
-extension(s: SumToken)
-    def precendence = 1;
+def parse(tokens: List[Token]): Expression = 
 
-extension(d: DifferenceToken)
-    def precendence = 1;
+    // operator precedence parser
+    // https://ycpcs.github.io/cs340-fall2018/lectures/lecture06.html
+    // https://en.wikipedia.org/wiki/Operator-precedence_parser
+    def recur(lhs: List[Token], minPrec: Int): Expression = ???
 
-extension(p: ProductToken)
-    def precendence = 2;
-
-extension(d: DivisionToken)
-    def precendence = 2;
-
-extension(p: PowerToken)
-    def precendence = 3;
-
-def parse(tokens: List[Token]): Expression = ???
+    recur(tokens, 0)

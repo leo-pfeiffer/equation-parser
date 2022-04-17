@@ -1,12 +1,38 @@
-trait Token
-case class SumToken() extends Token
-case class DifferenceToken() extends Token
-case class ProductToken() extends Token
-case class DivisionToken() extends Token
-case class NumberToken(n: Double) extends Token
-case class LeftParensToken() extends Token
-case class RightParensToken() extends Token
-case class PowerToken() extends Token
+abstract class Token() {
+    def precedence: Int
+}
+
+case class SumToken() extends Token {
+    def precedence = 1
+}
+
+case class DifferenceToken() extends Token{
+    def precedence = 1
+}
+
+case class ProductToken() extends Token {
+    def precedence = 2
+}
+
+case class DivisionToken() extends Token {
+    def precedence = 2
+}
+
+case class PowerToken() extends Token {
+    def precedence = 3
+}
+
+case class NumberToken(n: Double) extends Token {
+    def precedence = 4
+}
+
+case class LeftParensToken() extends Token {
+    def precedence = 4
+}
+
+case class RightParensToken() extends Token {
+    def precedence = 4
+}
 
 def tokenize(rawExpression: String): List[Token] = {
 
