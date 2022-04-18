@@ -1,4 +1,6 @@
 # equation-parser
+[![Tests](https://github.com/leo-pfeiffer/equation-parser/actions/workflows/scala.yml/badge.svg)](https://github.com/leo-pfeiffer/equation-parser/actions/workflows/scala.yml)
+
 Simple command line equation parser written in Scala to practice functional programming in Scala
 
 ## Usage
@@ -16,7 +18,7 @@ run "<expression>"
 
 Numbers can be specified as integers (e.g. `42`) or decimals (e.g. `1.23`) and are evaluated as doubles.
 
-Negative numbers must always be wrapped in parenthesis (i.e. write `(-42)+2` instead of `-42+2`).
+Negative numbers must always be wrapped in parentheses (i.e. write `(-42)+2` instead of `-42+2`).
 
 The following operations are allowed:
 
@@ -60,9 +62,9 @@ sbt:equation-parser> run "(-42)^3+(-42)"
 ## Implementation
 Evaluating an expression works in two steps:
 
-1. Tokenizer
-2. Parser
+1. Tokenizing
+2. Parsing
 
-The tokenizer converts the raw string into individual Tokens. This is quite straightforward and implemented in the `Tokenizer.scala`.
+The tokenizer converts the raw string into individual tokens. This is quite straightforward and implemented in the `Tokenizer.scala`.
 
 The parser in turn also works in two stages. Firstly, the list of tokens is converted from infix notation (as put in by the user) to [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) using the [Shunting Yard algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm). Parsing the RPN to the final expression is then straightforward. This is implemented in `Parser.scala`.
