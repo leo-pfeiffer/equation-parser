@@ -1,25 +1,32 @@
+import scala.collection.mutable.Stack
+
 def parse(tokens: List[Token]): Expression =
     val postfix = shuntingYard(tokens)
     reversePostfix(postfix)
 
 def reversePostfix(tokens: List[Token]): Expression = 
-    import scala.collection.mutable.Stack
-    val stack: Stack[Expression] = new Stack[Expression]
-    for (token <- tokens) {
-        if (isOperator(token)) token match {
-            case t: SumToken => stack.push(Sum(stack.pop, stack.pop))
-            case t: DifferenceToken => val x = stack.pop; stack.push(Difference(stack.pop, x))
-            case t: ProductToken => stack.push(Product(stack.pop, stack.pop))
-            case t: DivisionToken => val x = stack.pop; stack.push(Division(stack.pop, x))
-            case t: PowerToken => val x = stack.pop; stack.push(Power(stack.pop, x))
-            case _ => throw new RuntimeException(s""""$token" is not an operator""")
-        }
-        else token match {
-            case t: NumberToken => stack.push(Number(t.n))
-            case _ => throw new RuntimeException(s""""$token" is not valid here""")   
+
+    def recur(stack: Stack[Expression], tokens: List[Token]): Expression = tokens match {
+        case Nil => return stack.pop
+        case t :: rest => {
+            if (isOperator(t)) t match {
+                case t: SumToken => stack.push(Sum(stack.pop, stack.pop))
+                case t: DifferenceToken => val x = stack.pop; stack.push(Difference(stack.pop, x))
+                case t: ProductToken => stack.push(Product(stack.pop, stack.pop))
+                case t: DivisionToken => val x = stack.pop; stack.push(Division(stack.pop, x))
+                case t: PowerToken => val x = stack.pop; stack.push(Power(stack.pop, x))
+                case _ => throw new RuntimeException(s""""$t" is not an operator""")
+            }
+            else t match {
+                case t: NumberToken => stack.push(Number(t.n))
+                case _ => throw new RuntimeException(s""""$t" is not valid here""")   
+            }
+            recur(stack, rest)
         }
     }
-    stack.pop
+
+    recur(new Stack[Expression], tokens)
+
 
 def shuntingYard(tokens: List[Token]): List[Token] = 
     
