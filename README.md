@@ -16,6 +16,8 @@ run "<expression>"
 
 Numbers can be specified as integers (e.g. `42`) or decimals (e.g. `1.23`) and are evaluated as doubles.
 
+Negative numbers must always be wrapped in parenthesis (i.e. write `(-42)+2` instead of `-42+2`).
+
 The following operations are allowed:
 
 ```
@@ -48,6 +50,11 @@ sbt:equation-parser> run "100 / 8 - (2 * 3) + 4 ^ 3"
 ```
 sbt:equation-parser> run "((3 + 2) * (2 + 1)) ^ 2"
 225.0
+```
+
+```
+sbt:equation-parser> run "(-42)^3+(-42)"
+-74130.0
 ```
 
 ## Implementation
