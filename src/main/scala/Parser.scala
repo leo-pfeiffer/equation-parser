@@ -31,10 +31,10 @@ def reversePostfix(tokens: List[Token]): Expression =
 def shuntingYard(tokens: List[Token]): List[Token] = 
     
     var i = 0
-    var s: List[Token] = List()
+    val stack = new Stack[Token]
     var postfix: List[Token] = List()
 
-    def matchCond(o: OperatorToken): Boolean = s.head match {
+    def matchCond(o: OperatorToken): Boolean = stack.head match {
         case o2: OperatorToken => {
             (isLeftAssoc(o) && (o.precedence <= o2.precedence)) ||
             (isRightAssoc(o) && (o.precedence < o2.precedence))
@@ -47,27 +47,25 @@ def shuntingYard(tokens: List[Token]): List[Token] =
         token match {
             case n: NumberToken => postfix = postfix :+ n
             case o: OperatorToken => {
-                if (s.isEmpty) then s = o :: s
+                if (stack.isEmpty) then stack.push(o)
                 else {
-                    while(s != Nil && matchCond(o)) {
-                        postfix = postfix :+ s.head
-                        s = s.tail
+                    while(!stack.isEmpty && matchCond(o)) {
+                        postfix = postfix :+ stack.pop
                     }
-                    s = o :: s
+                    stack.push(o)
                 }
             }
-            case l: LeftParensToken => s = l :: s
+            case l: LeftParensToken => stack.push(l)
             case r: RightParensToken => {
-                while (!isLeftParens(s.head)) {
-                    postfix = postfix :+ s.head
-                    s = s.tail
+                while (!isLeftParens(stack.head)) {
+                    postfix = postfix :+ stack.pop
                 }
-                s = s.tail
+                stack.pop
             }
         }
     }
 
-    postfix ++ s
+    postfix ++ stack
 
 def isOperator(t: Token): Boolean = t match {
     case a: OperatorToken => true
