@@ -87,9 +87,9 @@ class ParserTest extends AnyFunSuite {
         }
     }
 
-    test("reverse postfix") {
+    test("parse postfix") {
         new TestTokens {
-            val x = evaluate(reversePostfix(eq1postfix))
+            val x = evaluate(parsePostfix(eq1postfix))
             val y = evaluate(eq1expr)
             assert(math.abs(x - y) < 0.01)
         }

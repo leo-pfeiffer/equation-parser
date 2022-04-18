@@ -1,14 +1,21 @@
+/** Represents arithmetic expression. */
 trait Expression
 
+/** Arithmetic operator */
 trait Operator extends Expression {
     val left: Expression
     val right: Expression
 }
 
+/** Number (double) of an arithmetic expression */
 case class Number(n: Double) extends Expression {
     def value = n
 }
 
+/** 
+ * Represents operators whose left and right side are commutative,
+ * i.e. the order of the LHS and RHS expression does not matter.
+ * */
 trait Commutative extends Operator {
     def canEqual(a: Any) = a.isInstanceOf[Commutative]
 
@@ -34,6 +41,11 @@ case class Product(left: Expression, right: Expression) extends Commutative
 case class Division(left: Expression, right: Expression) extends Operator
 case class Power(left: Expression, right: Expression) extends Operator
 
+/**
+ * Evaluate an expression.
+ * @param expression: expression to evaluate
+ * @return value of the expression
+ * */
 def evaluate(expression: Expression): Double = expression match
     case Number(n) => n
     case Sum(left, right) => evaluate(left) + evaluate(right)
