@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 /** Token of an expression */
 abstract class Token()
 
@@ -78,10 +79,26 @@ def tokenize(rawExpression: String): List[Token] = {
         case _ => throw RuntimeException(s""""$x is not legal""")
     }
 
+    /**
+     * Handle negative numbers.
+     * 
+     * Negative numbers are prefixed with a zero
+     * e.g. (-1) -> (0-1)
+     * to maintian both a left and right expression of the Difference operator.
+     * 
+     * @param tokens: list of tokens to handle
+     * @returns tokens with inserted zeros
+     * */
     def handleNegative(tokens: List[Token]): List[Token] = 
-        // ( -
-        // 
         
+        /**
+         * Insert prefix zero.
+         * 
+         * If the token list starts with "(, -" insert a zero.
+         * 
+         * @param tokens: list of params to check
+         * @return token list with inserted zero
+         * */
         def insert(tokens: List[Token]): List[Token] = tokens match {
             case a :: b :: rest => {
                 a match {
@@ -98,12 +115,12 @@ def tokenize(rawExpression: String): List[Token] = {
             case _ => Nil
         }
 
+        /** Recursively insert zeros where necessary */ 
         def recur(tokens: List[Token]): List[Token] =
             if tokens.isEmpty then Nil
             else if tokens.tail.isEmpty then tokens
             else insert(tokens) ++ recur(tokens.tail.tail)
 
-        println(">" + insert(tokens))
         recur(tokens)
 
 
@@ -113,8 +130,10 @@ def tokenize(rawExpression: String): List[Token] = {
         .split("(?=[)(+/*-])|(?<=[)(+/*-])|(?=[\\^])|(?<=[\\^])")
         .map(_.trim)
 
-    // tokenize each element and return
+    // tokenize each element
     val tokenized = splitted.map(tokenizeOne).toList
+
+    // handle negative numbers
     handleNegative(tokenized)
 }
 
