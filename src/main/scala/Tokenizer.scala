@@ -104,11 +104,11 @@ def tokenize(rawExpression: String): List[Token] = {
                 a match {
                     case _a: LeftParensToken => {
                         b match {
-                            case _b: DifferenceToken => _a :: NumberToken(0) :: _b :: Nil
-                            case _ => _a :: b :: Nil
+                            case _b: DifferenceToken => _a :: NumberToken(0) :: Nil
+                            case _ => _a :: Nil
                         }
                     }
-                    case _ => a :: b :: Nil
+                    case _ => a :: Nil
                 }
             }
             case a :: Nil => a :: Nil
@@ -119,7 +119,7 @@ def tokenize(rawExpression: String): List[Token] = {
         def recur(tokens: List[Token]): List[Token] =
             if tokens.isEmpty then Nil
             else if tokens.tail.isEmpty then tokens
-            else insert(tokens) ++ recur(tokens.tail.tail)
+            else insert(tokens) ++ recur(tokens.tail)
 
         recur(tokens)
 

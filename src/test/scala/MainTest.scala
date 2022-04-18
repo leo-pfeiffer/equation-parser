@@ -41,4 +41,16 @@ class MainTest extends AnyFunSuite {
         val s = "(-10) + 3"
         assert(getResult(s).eval == -7)
     }
+
+    test("long equation") {
+        val s = "1+8-342*23^(1^(1^(1^2)))-22313*2+((-16)/(13*2))/(5/(5/5))-(-(-1))"
+        val expected = -52484.1230
+        val actual = getResult(s).eval
+        assert(math.abs(expected - actual) < 0.1)
+    }
+
+    test("negative number with multiple parens") {
+        val s = "((-1))"
+        assert(getResult(s).eval == -1)
+    }
 }

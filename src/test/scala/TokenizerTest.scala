@@ -33,6 +33,15 @@ class TokenizerTest extends AnyFunSuite {
         ))
     }
 
+    test("negative number with multiple parens") {
+        val s = "((-1))"
+        assert(tokenize(s) == List(
+            LeftParensToken(), LeftParensToken(), NumberToken(0), 
+            DifferenceToken(), NumberToken(1), RightParensToken(), 
+            RightParensToken()
+        ))
+    }
+
     test("plain equation") {
         val eq = "1+2/3-4"    
         assert(tokenize(eq) == expected)
