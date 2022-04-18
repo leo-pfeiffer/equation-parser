@@ -1,2 +1,61 @@
 # equation-parser
 Simple command line equation parser written in Scala to practice functional programming in Scala
+
+## Usage
+
+The equation parser comes with a simple CLI. To evaluate an expression, run
+
+```sh
+# start the sbt server
+sbt
+
+run "<expression>"
+```
+
+## Allowed operations
+
+Numbers can be specified as integers (e.g. `42`) or decimals (e.g. `1.23`) and are evaluated as doubles.
+
+The following operations are allowed:
+
+```
++    Addition
+-    Difference
+*    Multiplication
+/    Division
+^    Power
+```
+
+You can also use left `(` and right `)` parentheses. Whitespaces are ignored.
+
+### Examples
+
+```
+sbt:equation-parser> run "1+2"
+3.0
+```
+
+```
+sbt:equation-parser> run "3 * (1 + 2) ^ 7"
+6561.0
+```
+
+```
+sbt:equation-parser> run "100 / 8 - (2 * 3) + 4 ^ 3"
+70.5
+```
+
+```
+sbt:equation-parser> run "((3 + 2) * (2 + 1)) ^ 2"
+225.0
+```
+
+## Implementation
+Evaluating an expression works in two steps:
+
+1. Tokenizer
+2. Parser
+
+The tokenizer converts the raw string into individual Tokens. This is quite straightforward and implemented in the `Tokenizer.scala`.
+
+The parser in turn also works in two stages. Firstly, the list of tokens is converted from infix notation (as put in by the user) to [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) using the [Shunting Yard algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm). Parsing the RPN to the final expression is then straightforward. This is implemented in `Parser.scala`.
