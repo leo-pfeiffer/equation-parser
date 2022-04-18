@@ -1,4 +1,5 @@
 import scala.collection.mutable.Stack
+import scala.annotation.tailrec
 
 def parse(tokens: List[Token]): Expression =
     val postfix = shuntingYard(tokens)
@@ -11,6 +12,7 @@ def reversePostfix(tokens: List[Token]): Expression =
         case _ => false
     }
 
+    @tailrec
     def recur(stack: Stack[Expression], tokens: List[Token]): Expression = tokens match {
         case Nil => stack.pop
         case t :: rest => {
@@ -50,6 +52,7 @@ def shuntingYard(tokens: List[Token]): List[Token] =
         case _ => false
     }
 
+    @tailrec
     def operatorUpdate(postfix: List[Token], stack: Stack[Token], o: OperatorToken): (Stack[Token], List[Token]) =
         def matchCond(o: OperatorToken, stack: Stack[Token]): Boolean = stack.head match {
             case o2: OperatorToken => {
@@ -61,10 +64,12 @@ def shuntingYard(tokens: List[Token]): List[Token] =
         if (stack.isEmpty || !matchCond(o, stack)) (stack.push(o), postfix)
         else operatorUpdate(postfix :+ stack.pop, stack, o)
 
+    @tailrec
     def rightParensUpdate(postfix: List[Token], stack: Stack[Token]): (Stack[Token], List[Token]) =
         if (isLeftParens(stack.head)) {stack.pop; (stack, postfix)}
         else rightParensUpdate(postfix :+ stack.pop, stack)
 
+    @tailrec
     def recur(stack: Stack[Token], postfix: List[Token], tokens: List[Token]): List[Token] = 
         tokens match {
             case Nil => postfix ++ stack
