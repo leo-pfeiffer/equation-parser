@@ -26,6 +26,13 @@ class TokenizerTest extends AnyFunSuite {
         assert(tokenize("12.34").head == NumberToken(12.34))
     }
 
+    test("negative number") {
+        assert(tokenize("(-1)") == List(
+            LeftParensToken(), NumberToken(0), DifferenceToken(),
+            NumberToken(1), RightParensToken()
+        ))
+    }
+
     test("plain equation") {
         val eq = "1+2/3-4"    
         assert(tokenize(eq) == expected)
@@ -34,11 +41,6 @@ class TokenizerTest extends AnyFunSuite {
     test("equation with whitespaces") {
         val eq = "1 + 2\n/\n3-\t4"    
         assert(tokenize(eq) == expected)
-    }
-
-    test("equation with negative number") {
-        val eq = "-1+2/3-4"
-        assert(tokenize(eq) == DifferenceToken() :: expected)
     }
 
     test("equation with character fails") {
@@ -53,6 +55,17 @@ class TokenizerTest extends AnyFunSuite {
             NumberToken(2), RightParensToken()
         )
         val eq = "(1+2)"
+        assert(tokenize(eq) == expected)
+    }
+
+    test ("equation with negative number") {
+        val eq = "10 * (-10)"
+        val expected = List(
+            NumberToken(10), ProductToken(), 
+            LeftParensToken(), NumberToken(0), 
+            DifferenceToken(), NumberToken(10),
+            RightParensToken()
+        )
         assert(tokenize(eq) == expected)
     }
 

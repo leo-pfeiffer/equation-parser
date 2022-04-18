@@ -78,6 +78,35 @@ def tokenize(rawExpression: String): List[Token] = {
         case _ => throw RuntimeException(s""""$x is not legal""")
     }
 
+    def handleNegative(tokens: List[Token]): List[Token] = 
+        // ( -
+        // 
+        
+        def insert(tokens: List[Token]): List[Token] = tokens match {
+            case a :: b :: rest => {
+                a match {
+                    case _a: LeftParensToken => {
+                        b match {
+                            case _b: DifferenceToken => _a :: NumberToken(0) :: _b :: Nil
+                            case _ => _a :: b :: Nil
+                        }
+                    }
+                    case _ => a :: b :: Nil
+                }
+            }
+            case a :: Nil => a :: Nil
+            case _ => Nil
+        }
+
+        def recur(tokens: List[Token]): List[Token] =
+            if tokens.isEmpty then Nil
+            else if tokens.tail.isEmpty then tokens
+            else insert(tokens) ++ recur(tokens.tail.tail)
+
+        println(">" + insert(tokens))
+        recur(tokens)
+
+
     // String splitted into (un-tokenized) parts
     val splitted = rawExpression
         .filterNot(_.isWhitespace)
@@ -85,7 +114,8 @@ def tokenize(rawExpression: String): List[Token] = {
         .map(_.trim)
 
     // tokenize each element and return
-    splitted.map(tokenizeOne).toList
+    val tokenized = splitted.map(tokenizeOne).toList
+    handleNegative(tokenized)
 }
 
 extension(tokenList: List[Token])

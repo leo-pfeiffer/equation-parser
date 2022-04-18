@@ -31,4 +31,14 @@ class MainTest extends AnyFunSuite {
         val s = "3*(4-2)"
         assert(getResult(s).eval == 6)
     }
+
+    test("negative number") {
+        val s = "3 + (-10)"
+        assert(getResult(s).eval == -7)
+    }
+
+    test("negative number leading") {
+        val s = "(-10) + 3"
+        assert(getResult(s).eval == -7)
+    }
 }
