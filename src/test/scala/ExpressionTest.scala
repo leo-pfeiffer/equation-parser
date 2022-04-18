@@ -65,4 +65,12 @@ class ExpresionTest extends AnyFunSuite {
             assert(evaluate(expr) == 6.2)
         }
     }
+
+    test("commutativity of sum") {
+        assert (Sum(Number(1), Number(2)) == Sum(Number(2), Number(1)))
+    }
+
+    test("commutativity of product") {
+        assert (Product(Number(1), Number(2)) == Product(Number(2), Number(1)))
+    }
 }

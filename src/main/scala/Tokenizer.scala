@@ -1,38 +1,38 @@
-abstract class Token() {
+abstract class Token()
+
+abstract class OperatorToken() extends Token {
     def precedence: Int
 }
 
-case class SumToken() extends Token {
-    def precedence = 1
-}
+trait Associates
+trait Left extends Associates
+trait Right extends Associates
 
-case class DifferenceToken() extends Token{
-    def precedence = 1
-}
-
-case class ProductToken() extends Token {
+case class SumToken() extends OperatorToken, Left {
     def precedence = 2
 }
 
-case class DivisionToken() extends Token {
+case class DifferenceToken() extends OperatorToken, Left {
     def precedence = 2
 }
 
-case class PowerToken() extends Token {
+case class ProductToken() extends OperatorToken, Left {
     def precedence = 3
 }
 
-case class NumberToken(n: Double) extends Token {
+case class DivisionToken() extends OperatorToken, Left {
+    def precedence = 3
+}
+
+case class PowerToken() extends OperatorToken, Right {
     def precedence = 4
 }
 
-case class LeftParensToken() extends Token {
-    def precedence = 4
-}
+case class NumberToken(n: Double) extends Token
 
-case class RightParensToken() extends Token {
-    def precedence = 4
-}
+case class LeftParensToken() extends Token
+
+case class RightParensToken() extends Token
 
 def tokenize(rawExpression: String): List[Token] = {
 
@@ -47,13 +47,17 @@ def tokenize(rawExpression: String): List[Token] = {
         case "(" => LeftParensToken()
         case ")" => RightParensToken()
         case numPattern(c: String) => NumberToken(c.toDouble)
-        case _ => throw RuntimeException("Illegal Token")
+        case _ => throw RuntimeException(s""""$x is not legal""")
     }
 
     val trimmed = rawExpression
         .filterNot(_.isWhitespace)
-        .split("(?=[)(+/*-^])|(?<=[)(+/*-^])")
+        //.split("(?=[)(+/*-^])|(?<=[)(+/*-^])")
+        .split("(?=[)(+/*-])|(?<=[)(+/*-])|(?=[\\^])|(?<=[\\^])")
         .map(_.trim)
 
     trimmed.map(tokenizeOne).toList
 }
+
+extension(tokenList: List[Token])
+    def parser: Expression = parse(tokenList)
