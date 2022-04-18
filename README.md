@@ -1,6 +1,4 @@
 # equation-parser
-[![Tests](https://github.com/leo-pfeiffer/equation-parser/actions/workflows/scala.yml/badge.svg)](https://github.com/leo-pfeiffer/equation-parser/actions/workflows/scala.yml)
-
 Simple command line equation parser written in Scala to practice functional programming in Scala
 
 ## Usage
