@@ -1,5 +1,5 @@
 # equation-parser
-Simple command line equation parser written in Scala to practice functional programming in Scala
+Simple command line equation parser and evaluator written in Scala to practice functional programming in Scala
 
 ## Usage
 
@@ -66,3 +66,7 @@ Evaluating an expression works in two steps:
 The tokenizer converts the raw string into individual tokens. This is quite straightforward and implemented in the `Tokenizer.scala`.
 
 The parser in turn also works in two stages. Firstly, the list of tokens is converted from infix notation (as put in by the user) to [RPN](https://en.wikipedia.org/wiki/Reverse_Polish_notation) using the [Shunting Yard algorithm](https://en.wikipedia.org/wiki/Shunting_yard_algorithm). Parsing the RPN to the final expression is then straightforward. This is implemented in `Parser.scala`.
+
+For example, parsing the equation `3+4*2/(1-5)^2^3` creates the following syntax tree.
+
+<img src=".github/syntax-tree.png" alt="Syntax Tree" width="600"/>
