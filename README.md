@@ -1,6 +1,8 @@
 # equation-parser
 Simple command line equation parser and evaluator written in Scala to practice functional programming in Scala
 
+[📝 Dev.to post about this project](https://dev.to/leopfeiffer/writing-an-equation-parser-in-scala-1cek)
+
 ## Usage
 
 The equation parser comes with a simple CLI. To evaluate an expression, run
